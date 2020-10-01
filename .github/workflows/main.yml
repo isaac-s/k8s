@@ -1,0 +1,31 @@
+name: Kubernetes CI/CD Demo
+on:
+  push:
+    branches: [ master ]  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install blueprint to test tenant
+        uses: cloudify-cosmo/create-environment-action@add-input-args
+        with:
+          environment-name: k8s-test
+          blueprint: blueprint_v2.yaml
+          inputs: "namespace=test"
+      - name: Update K8S deployment
+        id: update_deployment
+        env:
+          CLOUDIFY_USERNAME: ${{ secrets.CLOUDIFY_QA_USERNAME }}
+          CLOUDIFY_PASSWORD: ${{ secrets.CLOUDIFY_QA_PASSWORD }}
+          CLOUDIFY_TENANT: ${{ secrets.CLOUDIFY_QA_TENANT }}
+        run: |
+          cfy status
+env:
+  CLOUDIFY_HOST: ${{ secrets.CLOUDIFY_HOST }}
+  CLOUDIFY_USERNAME: ${{ secrets.CLOUDIFY_TEST_USERNAME }}
+  CLOUDIFY_PASSWORD: ${{ secrets.CLOUDIFY_TEST_PASSWORD }}
+  CLOUDIFY_TENANT: ${{ secrets.CLOUDIFY_TEST_TENANT }}
+  CLOUDIFY_SSL: ${{ secrets.CLOUDIFY_SSL }}
+  CLOUDIFY_SSL_TRUST_ALL: ${{ secrets.CLOUDIFY_SSL_TRUST_ALL }}
