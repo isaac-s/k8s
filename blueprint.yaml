@@ -1,0 +1,21 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://cloudify.co/spec/cloudify/5.0.5/types.yaml
+
+node_templates:
+  hello:
+    type: cloudify.nodes.Root
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: scripts/hello.py
+          executor: central_deployment_agent
+
+outputs:
+  host:
+    description: Host name
+    value: { get_attribute: [ hello, host ] }
+  port:
+    description: Port number
+    value: { get_attribute: [ hello, port ] }

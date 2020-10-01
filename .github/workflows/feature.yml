@@ -1,0 +1,27 @@
+name: "CI/CD flow demo: push feature branch"
+on:
+  push:
+    branches: [ feature/* ]
+jobs:
+  integration_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install environment on test tenant
+        uses: cloudify-cosmo/create-environment-action@v1.0
+        with:
+          environment-name: product-feature-$GITHUB_RUN_ID
+          blueprint: blueprint.yaml
+      - name: Delete environment from test tenant
+        uses: cloudify-cosmo/delete-environment-action@v1.0
+        with:
+          environment-name: product-feature-$GITHUB_RUN_ID
+          delete-blueprint: true
+env:
+  CLOUDIFY_HOST: ${{ secrets.CLOUDIFY_HOST }}
+  CLOUDIFY_USERNAME: ${{ secrets.CLOUDIFY_TEST_USERNAME }}
+  CLOUDIFY_PASSWORD: ${{ secrets.CLOUDIFY_TEST_PASSWORD }}
+  CLOUDIFY_TENANT: ${{ secrets.CLOUDIFY_TEST_TENANT }}
+  CLOUDIFY_SSL: ${{ secrets.CLOUDIFY_SSL }}
+  CLOUDIFY_SSL_TRUST_ALL: ${{ secrets.CLOUDIFY_SSL_TRUST_ALL }}

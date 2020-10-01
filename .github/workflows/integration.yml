@@ -1,0 +1,26 @@
+name: "CI/CD flow demo: push to integration branch"
+on:
+  push:
+    branches: [ develop ]
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Upload new blueprint
+        uses: cloudify-cosmo/cli-action@v1.0
+        with:
+          command: "blueprints upload blueprint.yaml -b bp_update_$GITHUB_RUN_ID"
+      - name: Update deployment
+        uses: cloudify-cosmo/cli-action@v1.0
+        with:
+          command: "deployments update $APP_DEPLOYMENT_ID -b bp_update_$GITHUB_RUN_ID"
+env:
+  APP_DEPLOYMENT_ID: test_app
+  CLOUDIFY_HOST: ${{ secrets.CLOUDIFY_HOST }}
+  CLOUDIFY_USERNAME: ${{ secrets.CLOUDIFY_USERNAME }}
+  CLOUDIFY_PASSWORD: ${{ secrets.CLOUDIFY_PASSWORD }}
+  CLOUDIFY_TENANT: ${{ secrets.CLOUDIFY_TENANT }}
+  CLOUDIFY_SSL: ${{ secrets.CLOUDIFY_SSL }}
+  CLOUDIFY_SSL_TRUST_ALL: ${{ secrets.CLOUDIFY_SSL_TRUST_ALL }}
