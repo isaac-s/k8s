@@ -1,4 +1,4 @@
-name: CI/CD flow demo
+name: "CI/CD flow demo: feature branch"
 on:
   push:
     branches-ignore: [ master ]
