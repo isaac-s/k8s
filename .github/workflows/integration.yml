@@ -1,7 +1,7 @@
-name: "CI/CD flow demo: release from master"
+name: "CI/CD flow demo: push to integration branch"
 on:
   push:
-    branches: [ master ]
+    branches: [ develop ]
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -9,11 +9,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Upload new blueprint
-        uses: isaac-s/cli-action@v1.0
+        uses: cloudify-cosmo/cli-action@v1.0
         with:
           command: "blueprints upload blueprint.yaml -b bp_update_$GITHUB_RUN_ID"
       - name: Update deployment
-        uses: isaac-s/cli-action@v1.0
+        uses: cloudify-cosmo/cli-action@v1.0
         with:
           command: "deployments update prod_app -b bp_update_$GITHUB_RUN_ID"
 env:
