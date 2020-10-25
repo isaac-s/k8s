@@ -1,3 +1,3 @@
 from cloudify import ctx
 
-ctx.logger.info("Hello world, updated")
+ctx.logger.info("Hello world")
