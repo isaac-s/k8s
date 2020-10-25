@@ -15,8 +15,9 @@ jobs:
       - name: Update deployment
         uses: cloudify-cosmo/cli-action@v1.0
         with:
-          command: "deployments update prod_app -b bp_update_$GITHUB_RUN_ID"
+          command: "deployments update $APP_DEPLOYMENT_ID -b bp_update_$GITHUB_RUN_ID"
 env:
+  APP_DEPLOYMENT_ID: prod_app
   CLOUDIFY_HOST: ${{ secrets.CLOUDIFY_HOST }}
   CLOUDIFY_USERNAME: ${{ secrets.CLOUDIFY_USERNAME }}
   CLOUDIFY_PASSWORD: ${{ secrets.CLOUDIFY_PASSWORD }}
