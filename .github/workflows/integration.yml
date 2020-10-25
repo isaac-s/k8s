@@ -3,7 +3,7 @@ on:
   push:
     branches: [ develop ]
 jobs:
-  release:
+  integration:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -17,7 +17,7 @@ jobs:
         with:
           command: "deployments update $APP_DEPLOYMENT_ID -b bp_update_$GITHUB_RUN_ID"
 env:
-  APP_DEPLOYMENT_ID: prod_app
+  APP_DEPLOYMENT_ID: test_app
   CLOUDIFY_HOST: ${{ secrets.CLOUDIFY_HOST }}
   CLOUDIFY_USERNAME: ${{ secrets.CLOUDIFY_USERNAME }}
   CLOUDIFY_PASSWORD: ${{ secrets.CLOUDIFY_PASSWORD }}
